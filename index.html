@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -245,8 +246,8 @@
 
                 const userPrompt = `用戶描述：${userInput}\n指定畫風：${style}\n指定光影：${lighting}`;
 
-                // 呼叫 Gemini API
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                // 呼叫 Gemini API (已更新為最新的 gemini-2.5-flash 模型)
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
