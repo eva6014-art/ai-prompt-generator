@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -44,19 +45,31 @@
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-6">
             <div class="flex items-center mb-3">
                 <i class="fa-solid fa-key text-amber-500 mr-2"></i>
-                <h2 class="text-lg font-semibold text-slate-800">1. API Key 設定</h2>
+                <h2 class="text-lg font-semibold text-slate-800">1. API Key 與 模型設定</h2>
             </div>
             <p class="text-xs text-slate-500 mb-3">請輸入您的 Google Gemini API Key。此金鑰僅會在您的瀏覽器中執行，不會被儲存或傳送至第三方伺服器。</p>
-            <div class="relative">
-                <input type="password" id="apiKeyInput" placeholder="AIzaSy..." 
-                    class="w-full pl-4 pr-10 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                <button type="button" id="togglePassword" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600" onclick="toggleApiKeyVisibility()">
-                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
-                </button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="relative md:col-span-2">
+                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." 
+                        class="w-full pl-4 pr-10 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    <button type="button" id="togglePassword" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600" onclick="toggleApiKeyVisibility()">
+                        <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+                <div class="md:col-span-1">
+                    <select id="modelSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white text-slate-700 text-sm">
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash (推薦)</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (穩定)</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro (高品質)</option>
+                        <option value="gemini-2.5-flash">Gemini 2.5 Flash (最新)</option>
+                    </select>
+                </div>
             </div>
-            <div class="mt-2 flex items-center">
+
+            <div class="mt-3 flex items-center">
                 <input type="checkbox" id="saveKeyCheck" class="mr-2 rounded border-slate-300 text-blue-600 focus:ring-blue-500" onchange="toggleSaveKey()">
-                <label for="saveKeyCheck" class="text-sm text-slate-600 cursor-pointer">在瀏覽器記住我的 API Key</label>
+                <label for="saveKeyCheck" class="text-sm text-slate-600 cursor-pointer">在瀏覽器記住我的 API Key 與選擇</label>
             </div>
         </section>
 
@@ -105,8 +118,8 @@
 
         <!-- 錯誤訊息提示區 (預設隱藏) -->
         <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span id="errorText">發生錯誤。</span>
+            <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
+            <span id="errorText" class="text-sm">發生錯誤。</span>
         </div>
 
         <!-- 結果展示區塊 -->
@@ -124,7 +137,7 @@
             
             <div id="loadingIndicator" class="hidden py-8 flex flex-col items-center justify-center text-slate-500">
                 <div class="loader mb-3"></div>
-                <p>AI 正在施展魔法擴充提示詞中...</p>
+                <p id="loadingText">AI 正在施展魔法擴充提示詞中...</p>
             </div>
 
             <div id="outputContent" class="text-slate-700 whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-mono bg-slate-50 p-4 rounded-lg border border-slate-200">
@@ -138,12 +151,17 @@
     </div>
 
     <script>
-        // 初始化：檢查是否存有 API Key
+        // 初始化：檢查是否存有 API Key 和模型選擇
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('gemini_api_key');
+            const savedModel = localStorage.getItem('gemini_model');
+            
             if (savedKey) {
                 document.getElementById('apiKeyInput').value = savedKey;
                 document.getElementById('saveKeyCheck').checked = true;
+            }
+            if (savedModel) {
+                document.getElementById('modelSelect').value = savedModel;
             }
         });
 
@@ -166,10 +184,14 @@
         function toggleSaveKey() {
             const isChecked = document.getElementById('saveKeyCheck').checked;
             const apiKey = document.getElementById('apiKeyInput').value;
+            const model = document.getElementById('modelSelect').value;
+            
             if (isChecked && apiKey) {
                 localStorage.setItem('gemini_api_key', apiKey);
+                localStorage.setItem('gemini_model', model);
             } else {
                 localStorage.removeItem('gemini_api_key');
+                localStorage.removeItem('gemini_model');
             }
         }
 
@@ -184,11 +206,15 @@
             document.getElementById('errorMessage').classList.add('hidden');
         }
 
+        // 暫停函式 (用於自動重試機制)
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
         // 呼叫 Gemini API 產生提示詞
         async function generatePrompt() {
             hideError();
             
             const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const selectedModel = document.getElementById('modelSelect').value;
             const userInput = document.getElementById('userInput').value.trim();
             const style = document.getElementById('styleSelect').value;
             const lighting = document.getElementById('lightingSelect').value;
@@ -208,17 +234,20 @@
             // 更新儲存的金鑰（如果使用者有勾選）
             if (document.getElementById('saveKeyCheck').checked) {
                 localStorage.setItem('gemini_api_key', apiKey);
+                localStorage.setItem('gemini_model', selectedModel);
             }
 
             // UI 狀態切換：顯示載入中
             const resultSection = document.getElementById('resultSection');
             const loadingIndicator = document.getElementById('loadingIndicator');
+            const loadingText = document.getElementById('loadingText');
             const outputContent = document.getElementById('outputContent');
             const generateBtn = document.getElementById('generateBtn');
 
             resultSection.classList.remove('hidden');
             loadingIndicator.classList.remove('hidden');
             outputContent.classList.add('hidden');
+            loadingText.textContent = 'AI 正在施展魔法擴充提示詞中...';
             
             // 停用按鈕避免重複點擊
             generateBtn.disabled = true;
@@ -226,7 +255,6 @@
             generateBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
             try {
-                // 系統提示詞指令 (System Prompt)
                 const systemInstruction = `你是一個專業的 AI 繪圖（Midjourney, Stable Diffusion）提示詞工程師。
 你的任務是將用戶的簡單中文描述，擴充成 3 個不同層次、詳細且高品質的【英文】繪圖提示詞。
 請不要在提示詞中加入任何中文，直接輸出可用的英文 prompt。
@@ -244,37 +272,55 @@
 [英文提示詞 3]`;
 
                 const userPrompt = `用戶描述：${userInput}\n指定畫風：${style}\n指定光影：${lighting}`;
-
-                // 呼叫 Gemini API (已更新為最新的 gemini-2.5-flash 模型)
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
                 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        systemInstruction: {
-                            parts: [{ text: systemInstruction }]
-                        },
-                        contents: [{
-                            parts: [{ text: userPrompt }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.7,
+                const requestBody = {
+                    systemInstruction: { parts: [{ text: systemInstruction }] },
+                    contents: [{ parts: [{ text: userPrompt }] }],
+                    generationConfig: { temperature: 0.7 }
+                };
+
+                // 自動重試機制 (最多重試 3 次)
+                let maxRetries = 3;
+                let currentTry = 0;
+                let data;
+
+                while (currentTry < maxRetries) {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    data = await response.json();
+
+                    // 如果成功，跳出迴圈
+                    if (response.ok) {
+                        break;
+                    }
+
+                    // 如果遇到 503(伺服器忙碌) 或 429(請求太頻繁)，則等待後重試
+                    if (response.status === 503 || response.status === 429) {
+                        currentTry++;
+                        if (currentTry >= maxRetries) {
+                            throw new Error(`嘗試 ${maxRetries} 次後伺服器依然忙碌。建議在上方切換「其他 AI 模型」再試一次。\n(錯誤訊息: ${data.error?.message || 'High demand'})`);
                         }
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error?.message || 'API 請求失敗，請檢查 API Key 是否正確。');
+                        
+                        // 更新介面提示使用者正在重試
+                        const delay = 2000 * currentTry; // 每次等待時間加長 (2秒, 4秒)
+                        loadingText.textContent = `伺服器塞車中，正在進行第 ${currentTry} 次重試...`;
+                        generateBtn.innerHTML = `<div class="loader !w-4 !h-4 !border-2"></div> 重試中 (${currentTry}/${maxRetries})...`;
+                        
+                        await sleep(delay);
+                    } else {
+                        // 其他錯誤 (例如密碼錯誤、404等)，直接拋出不重試
+                        throw new Error(data.error?.message || 'API 請求失敗，請檢查 API Key 是否正確。');
+                    }
                 }
 
                 // 解析並顯示結果
                 const generatedText = data.candidates[0].content.parts[0].text;
-                outputContent.textContent = generatedText; // 使用 textContent 避免 XSS，且保留換行
+                outputContent.textContent = generatedText;
 
                 // 顯示結果區塊
                 loadingIndicator.classList.add('hidden');
@@ -292,7 +338,7 @@
             }
         }
 
-        // 複製到剪貼簿功能 (使用更兼容 iframe 的方法)
+        // 複製到剪貼簿功能
         function copyToClipboard() {
             const outputText = document.getElementById('outputContent').textContent;
             if (!outputText) return;
@@ -308,7 +354,6 @@
                 const originalText = copyBtnText.textContent;
                 copyBtnText.textContent = '已複製！';
                 
-                // 兩秒後恢復文字
                 setTimeout(() => {
                     copyBtnText.textContent = originalText;
                 }, 2000);
