@@ -176,6 +176,13 @@
     </div>
 
     <script>
+        // ── Hub 共用板整合 ────────────────────────────────────────
+        var HUB_KEY = 'hub_prompt';
+        function hubSave(text, source) {
+            if (!text) return;
+            localStorage.setItem(HUB_KEY, JSON.stringify({text: text, source: source, time: Date.now()}));
+        }
+
         // 初始化：檢查是否存有 API Key 和模型選擇
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('gemini_api_key');
@@ -187,6 +194,18 @@
             }
             if (savedModel) {
                 document.getElementById('modelSelect').value = savedModel;
+            }
+
+            // 從 Interrogator 或 Hub 帶入的 prompt
+            const params = new URLSearchParams(window.location.search);
+            const imported = params.get('import');
+            if (imported) {
+                const textarea = document.getElementById('userInput');
+                textarea.value = decodeURIComponent(imported);
+                const notice = document.createElement('p');
+                notice.textContent = '✅ 已從 Hub 帶入咒語，可直接生成優化版本';
+                notice.style.cssText = 'color:#059669;font-size:13px;margin:6px 0 0;';
+                textarea.parentNode.insertBefore(notice, textarea.nextSibling);
             }
         });
 
@@ -370,6 +389,7 @@
                 // 解析並顯示結果
                 const generatedText = data.candidates[0].content.parts[0].text;
                 outputContent.textContent = generatedText;
+                hubSave(generatedText, 'generator');
 
                 // 顯示結果區塊
                 loadingIndicator.classList.add('hidden');
