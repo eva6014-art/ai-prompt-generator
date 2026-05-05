@@ -185,6 +185,7 @@
 
         // 初始化：檢查是否存有 API Key 和模型選擇
         document.addEventListener('DOMContentLoaded', () => {
+            // Hub 全域 Key 優先（gemini_api_key 為統一 key，Hub 儲存時也用此名）
             const savedKey = localStorage.getItem('gemini_api_key');
             const savedModel = localStorage.getItem('gemini_model');
             
