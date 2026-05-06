@@ -13,6 +13,24 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
+
+        /* ── Composition & Ratio Chips ── */
+        .comp-chip, .ratio-chip {
+            font-size: 13px; padding: 5px 14px;
+            border-radius: 20px; border: 1.5px solid #e2e8f0;
+            background: #f8fafc; color: #475569;
+            cursor: pointer; transition: all .15s; white-space: nowrap;
+            font-family: inherit;
+        }
+        .comp-chip:hover, .ratio-chip:hover {
+            border-color: #818cf8; color: #4338ca;
+        }
+        .comp-chip.active {
+            background: #1e293b; border-color: #1e293b; color: #fff;
+        }
+        .ratio-chip.active {
+            background: #1e293b; border-color: #1e293b; color: #fff;
+        }
         .loader {
             border: 3px solid #f3f3f3;
             border-top: 3px solid #3b82f6;
@@ -76,7 +94,39 @@
             <textarea id="userInput" rows="3" placeholder="例如：一隻戴著太空頭盔的橘貓，正在火星上喝咖啡..." 
                 class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"></textarea>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <!-- 構圖版式 -->
+            <div class="mt-4 mb-1">
+                <label class="block text-sm font-medium text-slate-700 mb-2">
+                    <i class="fa-solid fa-table-cells-large text-indigo-400 mr-1"></i>構圖方式 (Composition)
+                </label>
+                <div class="flex flex-wrap gap-2" id="compositionChips">
+                    <button type="button" class="comp-chip" data-value="" onclick="selectChip(this,'comp')">不指定</button>
+                    <button type="button" class="comp-chip" data-value="rule of thirds composition" onclick="selectChip(this,'comp')">三分法</button>
+                    <button type="button" class="comp-chip" data-value="centered symmetrical composition" onclick="selectChip(this,'comp')">置中</button>
+                    <button type="button" class="comp-chip" data-value="left-heavy composition, right side reserved for text" onclick="selectChip(this,'comp')">左視覺右文案</button>
+                    <button type="button" class="comp-chip" data-value="right-heavy composition, left side reserved for text" onclick="selectChip(this,'comp')">右視覺左文案</button>
+                    <button type="button" class="comp-chip" data-value="dynamic diagonal composition" onclick="selectChip(this,'comp')">斜角動感</button>
+                    <button type="button" class="comp-chip" data-value="close-up product shot, macro detail" onclick="selectChip(this,'comp')">商品特寫</button>
+                </div>
+            </div>
+
+            <!-- 畫面比例 -->
+            <div class="mt-3 mb-3">
+                <label class="block text-sm font-medium text-slate-700 mb-2">
+                    <i class="fa-solid fa-crop-simple text-indigo-400 mr-1"></i>畫面比例 (Aspect Ratio)
+                </label>
+                <div class="flex flex-wrap gap-2" id="ratioChips">
+                    <button type="button" class="ratio-chip" data-value="16:9" onclick="selectChip(this,'ratio')">16:9</button>
+                    <button type="button" class="ratio-chip active" data-value="1920x600" onclick="selectChip(this,'ratio')">1920×600</button>
+                    <button type="button" class="ratio-chip" data-value="1:1" onclick="selectChip(this,'ratio')">1:1</button>
+                    <button type="button" class="ratio-chip" data-value="9:16" onclick="selectChip(this,'ratio')">9:16</button>
+                    <button type="button" class="ratio-chip" data-value="3:2 KV" onclick="selectChip(this,'ratio')">3:2 KV</button>
+                    <button type="button" class="ratio-chip" data-value="4:3" onclick="selectChip(this,'ratio')">4:3</button>
+                    <button type="button" class="ratio-chip" data-value="21:9" onclick="selectChip(this,'ratio')">21:9</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">畫風 (Style)</label>
                     <select id="styleSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
@@ -124,15 +174,9 @@
                     </select>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">長寬比 (Aspect Ratio)</label>
-                    <select id="aspectRatioSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
-                        <option value="16:9">16:9 (橫向寬螢幕 Landscape)</option>
-                        <option value="1:1">1:1 (正方形 Square)</option>
-                        <option value="9:16">9:16 (直式短影音 Portrait)</option>
-                        <option value="4:3">4:3 (傳統螢幕 Standard)</option>
-                        <option value="3:4">3:4 (直式照片 Vertical)</option>
-                        <option value="21:9">21:9 (電影寬螢幕 Cinematic)</option>
+                <div style="display:none;">
+                    <select id="aspectRatioSelect">
+                        <option value="16:9" selected>16:9</option>
                     </select>
                 </div>
             </div>
@@ -181,6 +225,28 @@
         function hubSave(text, source) {
             if (!text) return;
             localStorage.setItem(HUB_KEY, JSON.stringify({text: text, source: source, time: Date.now()}));
+        }
+
+
+        // ── Chip 選擇器 ──
+        let selectedComp = '';
+        let selectedRatio = '1920x600'; // 預設
+
+        // 初始化：預設 1920x600 active
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.ratio-chip[data-value="1920x600"]')?.classList.add('active');
+        });
+
+        function selectChip(el, type) {
+            if (type === 'comp') {
+                document.querySelectorAll('.comp-chip').forEach(c => c.classList.remove('active'));
+                el.classList.add('active');
+                selectedComp = el.dataset.value;
+            } else {
+                document.querySelectorAll('.ratio-chip').forEach(c => c.classList.remove('active'));
+                el.classList.add('active');
+                selectedRatio = el.dataset.value;
+            }
         }
 
         // 初始化：檢查是否存有 API Key 和模型選擇
@@ -306,7 +372,7 @@
 你的任務是將用戶的簡單中文描述，擴充成 3 個不同層次、詳細且高品質的繪圖提示詞。
 每個選項必須包含「英文提示詞」與「中文翻譯」，方便使用者理解。英文提示詞需包含：主體細節、背景環境、指定畫風、指定光影、以及提升畫質的常見關鍵字。
 
-⚠️ 重要指示：用戶會指定「圖片長寬比」，請務必將長寬比轉換為 Midjourney 的參數格式（例如 --ar 16:9），並且【絕對要放在每段英文咒語的最後面】。
+⚠️ 重要指示1：若用戶有指定「構圖方式」，請將其融入英文提示詞的構圖描述中。\n⚠️ 重要指示2：用戶會指定「圖片長寬比」，請務必將長寬比轉換為 Midjourney 的參數格式（例如 --ar 16:9），並且【絕對要放在每段英文咒語的最後面】。
 
 請嚴格以以下的 Markdown 格式輸出，不要有多餘的廢話：
 
@@ -328,7 +394,12 @@
 **【中文翻譯】**
 [中文翻譯 3]`;
 
-                const userPrompt = `用戶描述：${userInput}\n指定畫風：${style}\n指定光影：${lighting}\n指定圖片長寬比：${aspectRatio}`;
+                // 組合構圖與比例
+                const compPart = selectedComp ? `\n指定構圖方式：${selectedComp}` : '';
+                // 比例轉換成 --ar 格式
+                const ratioMap = {'1920x600':'32:10','3:2 KV':'3:2'};
+                const arValue = ratioMap[selectedRatio] || selectedRatio;
+                const userPrompt = `用戶描述：${userInput}\n指定畫風：${style}\n指定光影：${lighting}${compPart}\n指定圖片長寬比：${arValue}`;
                 
                 // 動態決定 API 版本
                 const apiVersion = selectedModel === 'gemini-pro' ? 'v1' : 'v1beta';
