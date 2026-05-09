@@ -31,20 +31,6 @@
         .ratio-chip.active {
             background: #1e293b; border-color: #1e293b; color: #fff;
         }
-
-/* ── Style Grid ── */
-.sg-btn{font-size:11px;padding:4px 10px;border-radius:4px;border:1px solid #d1d5db;background:#f8fafc;color:#64748b;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:inherit;}
-.sg-btn:hover{border-color:#818cf8;color:#4338ca;}
-.sg-btn.open{background:#1e293b;border-color:#1e293b;color:#fff;}
-.sg-wrap{display:none;margin-top:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;}
-.sg-wrap.open{display:block;}
-.sg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;}
-.sg-item{cursor:pointer;border-radius:6px;overflow:hidden;border:2px solid transparent;transition:all .15s;}
-.sg-item:hover{border-color:#6366f1;transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.12);}
-.sg-item.sg-on{border-color:#1e293b;box-shadow:0 0 0 1px #1e293b;}
-.sg-item img{width:100%;height:64px;object-fit:cover;display:block;}
-.sg-item-label{font-size:9px;font-weight:500;padding:3px 4px;color:#374151;background:#fff;text-align:center;line-height:1.3;}
-.sg-note{font-size:10px;color:#94a3b8;margin-top:6px;text-align:right;}
         .loader {
             border: 3px solid #f3f3f3;
             border-top: 3px solid #3b82f6;
@@ -145,41 +131,37 @@
                     <label class="block text-sm font-medium text-slate-700 mb-1">畫風 (Style)</label>
                     <select id="styleSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
                         <optgroup label="📸 攝影與寫實 (Photography)">
-                            <option value="photorealistic, ultra-detailed photography, sharp focus">寫實攝影 (Photorealistic)</option>
-                            <option value="minimalist product photography, clean white studio background, professional lighting">極簡產品棚拍 (Product Photography)</option>
-                            <option value="luxury brand campaign photography, editorial fashion">奢品廣告攝影 (Luxury Campaign)</option>
-                            <option value="cinematic film still, anamorphic lens, movie-quality render, 35mm film grain">電影質感 (Cinematic Film)</option>
+                            <option value="寫實攝影 (Photorealistic)">寫實攝影 (Photorealistic)</option>
+                            <option value="Minimalist product photography, high-end commercial, clean studio background, sharp focus">極簡產品棚拍 (Product Photography)</option>
                         </optgroup>
                         <optgroup label="🌸 日本動漫與漫畫 (Anime & Manga)">
-                            <option value="Japanese anime illustration style, vibrant colors, clean linework">動漫風格 (Anime Style)</option>
-                            <option value="Japanese shoujo manga style, delicate linework, soft pastel tones, sparkle effects">日本少女漫畫 (Japanese Shoujo Manga)</option>
-                            <option value="Japanese shounen manga style, bold linework, dynamic action composition">日本少年漫畫 (Japanese Shounen Manga)</option>
-                            <option value="black and white shoujo manga, ink illustration, screen tone texture">日本黑白少女漫畫 (B&W Shoujo Manga)</option>
-                            <option value="black and white shounen manga, high contrast ink, speed lines">日本黑白少年漫畫 (B&W Shounen Manga)</option>
+                            <option value="動漫風格 (Anime Style)">動漫風格 (Anime Style)</option>
+                            <option value="日本少女漫畫風格 (Japanese Shoujo Manga Style, delicate lines, emotional)">日本少女漫畫 (Japanese Shoujo Manga)</option>
+                            <option value="日本少年漫畫風格 (Japanese Shounen Manga Style, dynamic action, sharp ink)">日本少年漫畫 (Japanese Shounen Manga)</option>
+                            <option value="日本黑白少女漫畫 (Japanese Shoujo Manga Style, monochrome, black and white, screen tone, delicate lines)">日本黑白少女漫畫 (B&W Shoujo Manga)</option>
+                            <option value="日本黑白少年漫畫 (Japanese Shounen Manga Style, monochrome, black and white, dynamic action, sharp ink)">日本黑白少年漫畫 (B&W Shounen Manga)</option>
                         </optgroup>
                         <optgroup label="🎨 商業設計與插畫 (Design & Illustration)">
-                            <option value="flat vector illustration, clean geometric shapes, bold colors, no gradients">扁平化商業插畫 (Flat Vector)</option>
-                            <option value="Japanese flat poster art style, retro travel poster aesthetic, limited color palette">日系扁平海報插畫 (Flat Poster Art)</option>
-                            <option value="flat infographic illustration, isometric icons, modern data visualization style">現代扁平資訊圖表 (Flat Infographic)</option>
-                            <option value="editorial illustration, magazine style, conceptual art, sophisticated composition">雜誌編輯風格插畫 (Editorial Illustration)</option>
-                            <option value="flat vector logo design, minimalist icon, clean brand identity">扁平化商標設計 (Flat Vector Logo)</option>
+                            <option value="Flat vector illustration, corporate, clean design">扁平化商業插畫 (Flat Vector)</option>
+                            <option value="Vector art, flat design, clean black outlines, limited color palette, graphic illustration, minimalist 2D style, poster art, modern minimalist graphic, bold color blocking, solid background">日系扁平海報插畫 (Flat Poster Art)</option>
+                            <option value="Vector art, flat design, clean black outlines, limited color palette, graphic illustration, minimalist 2D style, infographic layout, icon art, clean diagrammatic illustration, precise line weights, plain light background">現代扁平資訊圖表 (Flat Infographic)</option>
+                            <option value="Editorial illustration, flat colors, modern graphic design aesthetic, vector art">雜誌編輯風格插畫 (Editorial Illustration)</option>
+                            <option value="Minimalist logo design, flat vector graphic, solid background, clean lines, scalable">扁平化商標設計 (Flat Vector Logo)</option>
                             <option value="corporate Memphis style, flat geometric illustration, diverse characters, bright pastel colors, rounded shapes, simple bold lines, tech startup aesthetic">企業孟菲斯風格 (Corporate Memphis)</option>
-                            <option value="Japanese editorial illustration, flat vector style, mid-century modern aesthetic, minimal line art, muted blue color palette, geometric human figures, lifestyle poster design, clean negative space, retro Japanese tourism poster, screen print texture, simple facial features, contemporary graphic illustration">日本編輯插畫海報 (Japanese Editorial)</option>
+                            <option value="The rule of thirds composition, Japanese illustration, flat vector style, medieval-modern aesthetics, minimalist line art, soft color tones, geometric figures, lifestyle poster design, clean white space, retro Japanese travel posters, silkscreen textures, simple facial features, contemporary graphic illustration, dramatic cinematic lighting, three-dimensional lighting, deep color tones, and subtle vignetting">日本編輯插畫海報 (Japanese Editorial)</option>
                             <option value="Japanese flat poster illustration, naive art style, bold primary colors, geometric cartoon characters, thick outline, risograph print aesthetic, playful editorial illustration, minimal shading, Scandinavian graphic design influence, poster">日本活潑海報插畫 (Naive Risograph)</option>
                             <option value="Japanese urban street illustration, Taiwan old street scene, dense shop signs, hand-drawn cityscape, retro travel poster style, risograph texture, lively night market atmosphere, naive perspective, sketchy line art, warm nostalgic mood">台灣老街城市插畫 (Taiwan Street)</option>
-                            <option value="Korean flat business illustration, Korean financial advertising cartoon style, cute office lady character, smiling female employee in formal suit, finger gun pose, floating credit cards, stacks of gold coins, mint green gradient background, flat vector illustration, thick black outlines, simple geometric shapes, minimal shading, soft pastel color palette, clean commercial design, playful fintech promotion artwork, Korean webtoon illustration aesthetic, editorial cartoon style, simplified facial features, rounded character design, 2D vector graphic, modern banking advertisement illustration, high readability composition, clean negative space, glossy color accents, minimal detail, friendly corporate mascot illustration, subtle shadowing, polished digital artwork, contemporary Korean promotional poster style, cute financial concept art">韓系Q版企業廣告插畫 (Korean Biz Illus)</option>
-                            <option value="Japanese infographic illustration, Japanese lifestyle editorial illustration, flat vector commercial artwork, clean line art, modern mobile UI storytelling, social media short-video interface design, minimalist Japanese cartoon style, thick clean outlines, flat cel shading, contemporary fintech advertising illustration, app interface inspired composition, organized panel storytelling, clean geometric shapes, friendly character design, simplified facial features, editorial infographic layout, modern Japanese web illustration aesthetic, flat 2D vector art, lifestyle marketing illustration, subtle interior decoration, Scandinavian living room aesthetic, highly readable composition, polished digital illustration, commercial campaign artwork, cozy atmosphere, white background, clean negative space">日系簡約輪廓插畫風 (JP Minimal Outline)</option>
                             <option value="isometric editorial illustration, flat geometric characters with thick outlines, minimal color palette, naive art style, hand-drawn line quality, isometric city scene, playful financial lifestyle, risograph print texture, bold typography integration, clean white background, contemporary Japanese illustration aesthetic">等角城市插畫 (Isometric Editorial)</option>
                         </optgroup>
                         <optgroup label="👾 數位與 3D 藝術 (Digital & 3D)">
-                            <option value="3D render, glossy materials, depth of field, octane render, studio lighting">3D 動畫 (3D Animation)</option>
-                            <option value="3D clay icon style, soft matte texture, pastel colors, cute chibi proportions">3D 黏土圖示 (3D Clay Icon)</option>
-                            <option value="cyberpunk aesthetic, neon lights, rain-soaked streets, dystopian city, high contrast">賽博龐克 (Cyberpunk)</option>
+                            <option value="3D 動畫 (3D Animation)">3D 動畫 (3D Animation)</option>
+                            <option value="3D clay render, cute isometric icon, smooth lighting">3D 黏土圖示 (3D Clay Icon)</option>
+                            <option value="賽博龐克 (Cyberpunk)">賽博龐克 (Cyberpunk)</option>
                         </optgroup>
                         <optgroup label="🖼️ 傳統與純藝術 (Fine Art)">
-                            <option value="watercolor painting, soft washes, bleeding edges, delicate brushwork, paper texture">水彩畫 (Watercolor)</option>
-                            <option value="oil painting, thick impasto brushstrokes, rich pigment, canvas texture, classical style">油畫 (Oil Painting)</option>
-                            <option value="pop art style, bold outlines, Ben-Day dots, high saturation, Andy Warhol inspired">普普藝術 (Pop Art)</option>
+                            <option value="水彩畫 (Watercolor)">水彩畫 (Watercolor)</option>
+                            <option value="油畫 (Oil Painting)">油畫 (Oil Painting)</option>
+                            <option value="Pop art, vibrant colors, retro halftone">普普藝術 (Pop Art)</option>
                         </optgroup>
                     </select>
                 </div>
@@ -204,34 +186,6 @@
                 </div>
             </div>
 
-<div class="mt-3"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:11px;color:#94a3b8;">風格視覺參考</span><button class="sg-btn" id="sg-btn-gen" type="button">▼ 風格預覽</button></div>
-<div class="sg-wrap" id="sg-grid-gen"><div class="sg-grid"><div class="sg-item" data-kw="photorealistic, ultra-detailed photography" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/f2640e9c-4672-4c99-b6df-3e96fd9aa667" alt="寫實攝影" loading="lazy"><div class="sg-item-label">寫實攝影</div></div>
-<div class="sg-item" data-kw="minimalist product photography" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/b8e6c866-bda5-4b1a-981f-1388a5b4d175" alt="極簡產品棚拍" loading="lazy"><div class="sg-item-label">極簡產品棚拍</div></div>
-<div class="sg-item" data-kw="luxury brand campaign photography" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/254e9b30-a944-47a1-a7f0-98eab8cac0d6" alt="奢品廣告攝影" loading="lazy"><div class="sg-item-label">奢品廣告攝影</div></div>
-<div class="sg-item" data-kw="cinematic film still" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/35bedadd-47f9-40bb-b270-994c9ca027ad" alt="電影質感" loading="lazy"><div class="sg-item-label">電影質感</div></div>
-<div class="sg-item" data-kw="Japanese anime illustration style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/8429c9f4-744e-4117-860e-67ec5eb88a63" alt="動漫風格" loading="lazy"><div class="sg-item-label">動漫風格</div></div>
-<div class="sg-item" data-kw="Japanese shoujo manga style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/0c1f6d0a-756b-4098-be15-4d046df05ab8" alt="日本少女漫畫" loading="lazy"><div class="sg-item-label">日本少女漫畫</div></div>
-<div class="sg-item" data-kw="Japanese shounen manga style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/2f2160d1-42bb-43bd-947c-59b14a82f87b" alt="日本少年漫畫" loading="lazy"><div class="sg-item-label">日本少年漫畫</div></div>
-<div class="sg-item" data-kw="black and white shoujo manga" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/c7764b5b-2e1a-4761-8099-451617928183" alt="黑白少女漫畫" loading="lazy"><div class="sg-item-label">黑白少女漫畫</div></div>
-<div class="sg-item" data-kw="black and white shounen manga" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/df505f44-b98e-43b3-80b7-65f080d3f99c" alt="黑白少年漫畫" loading="lazy"><div class="sg-item-label">黑白少年漫畫</div></div>
-<div class="sg-item" data-kw="flat vector illustration" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/0439d7e4-00ee-4586-b931-fd15ac3610cf" alt="扁平化插畫" loading="lazy"><div class="sg-item-label">扁平化插畫</div></div>
-<div class="sg-item" data-kw="Japanese flat poster art style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/83cff9f7-e654-4f51-8252-754b9d0665d3" alt="日系扁平海報" loading="lazy"><div class="sg-item-label">日系扁平海報</div></div>
-<div class="sg-item" data-kw="flat infographic illustration" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/5b88693c-966d-4692-8e84-b2c301eed685" alt="扁平資訊圖表" loading="lazy"><div class="sg-item-label">扁平資訊圖表</div></div>
-<div class="sg-item" data-kw="editorial illustration, magazine style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/e6d6d696-ccd9-4945-ac3e-bcd1bdc42f5f" alt="雜誌編輯插畫" loading="lazy"><div class="sg-item-label">雜誌編輯插畫</div></div>
-<div class="sg-item" data-kw="flat vector logo design" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/3a610d6d-f72a-42d9-9913-a7bad8a8e63f" alt="扁平商標設計" loading="lazy"><div class="sg-item-label">扁平商標設計</div></div>
-<div class="sg-item" data-kw="corporate Memphis style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/f867062f-9bed-4c49-bc71-ea8ddf89065a" alt="企業孟菲斯風格" loading="lazy"><div class="sg-item-label">企業孟菲斯風格</div></div>
-<div class="sg-item" data-kw="Japanese editorial illustration, flat vector style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/25bb1fae-06f2-4f83-bed0-3027deca8d23" alt="日本編輯插畫海報" loading="lazy"><div class="sg-item-label">日本編輯插畫海報</div></div>
-<div class="sg-item" data-kw="naive art style, bold primary colors" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/06595399-e743-4904-947c-bde733b97060" alt="日本活潑海報插畫" loading="lazy"><div class="sg-item-label">日本活潑海報插畫</div></div>
-<div class="sg-item" data-kw="Taiwan old street scene" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/60468818-6ee5-40c5-8160-ede35ea11955" alt="台灣老街城市插畫" loading="lazy"><div class="sg-item-label">台灣老街城市插畫</div></div>
-<div class="sg-item" data-kw="isometric editorial illustration" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/a2c6bc3f-81ab-4887-93e4-b441d0aeab35" alt="等角城市插畫" loading="lazy"><div class="sg-item-label">等角城市插畫</div></div>
-<div class="sg-item" data-kw="3D render, glossy materials" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/5bfa218b-bb60-40c0-8a17-104c82de0884" alt="3D 渲染" loading="lazy"><div class="sg-item-label">3D 渲染</div></div>
-<div class="sg-item" data-kw="3D clay icon style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/5e584a4c-8027-456a-b410-1fced2a7ed81" alt="3D 黏土圖示" loading="lazy"><div class="sg-item-label">3D 黏土圖示</div></div>
-<div class="sg-item" data-kw="cyberpunk aesthetic, neon lights" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/f7b0bea4-2dd7-4379-8bb9-5407043ddbf9" alt="賽博龐克" loading="lazy"><div class="sg-item-label">賽博龐克</div></div>
-<div class="sg-item" data-kw="watercolor painting, soft washes" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/330b2c3e-75d9-42ca-9ae7-bd466770bc50" alt="水彩畫" loading="lazy"><div class="sg-item-label">水彩畫</div></div>
-<div class="sg-item" data-kw="oil painting, thick impasto" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/1ad87b4d-5e2e-46ed-9bf4-a7722275632b" alt="油畫" loading="lazy"><div class="sg-item-label">油畫</div></div>
-<div class="sg-item" data-kw="pop art style, bold outlines" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/c93509ee-b003-4da4-93a9-c4712318ae50" alt="普普藝術" loading="lazy"><div class="sg-item-label">普普藝術</div></div><div class="sg-item" data-kw="Korean flat business illustration, Korean financial advertising cartoon style" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/a90ab663-b704-4099-a5ed-785d000cb7ce" alt="韓系Q版企業廣告插畫" loading="lazy"><div class="sg-item-label">韓系Q版企業廣告插畫</div></div><div class="sg-item" data-kw="Japanese infographic illustration, Japanese lifestyle editorial illustration" onclick="sgClick(this)"><img src="https://github.com/user-attachments/assets/ed34b27a-dede-45ca-a780-51925a6dc3d8" alt="日系簡約輪廓插畫風" loading="lazy"><div class="sg-item-label">日系簡約輪廓插畫風</div></div>
-</div><div class="sg-note">點圖套用風格</div></div>
-</div>
             <button id="generateBtn" onclick="generatePrompt()" 
                 class="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
                 <i class="fa-solid fa-bolt"></i>
@@ -557,44 +511,5 @@
             }
         }
     </script>
-<script>
-(function(){
-  var sel  = document.getElementById('styleSelect');
-  var grid = document.getElementById('sg-grid-gen');
-  var btn  = document.getElementById('sg-btn-gen');
-  if(!sel||!grid||!btn) return;
-
-  function sync(){
-    var cur = sel.value;
-    grid.querySelectorAll('.sg-item').forEach(function(el){
-      el.classList.toggle('sg-on', cur.indexOf(el.dataset.kw) !== -1);
-    });
-  }
-
-  btn.addEventListener('click', function(){
-    var open = grid.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    btn.textContent = open ? '▲ 收起' : '▼ 風格預覽';
-    if(open) sync();
-  });
-
-  sel.addEventListener('change', function(){ if(grid.classList.contains('open')) sync(); });
-
-  window.sgClick = function(el){
-    var kw = el.dataset.kw;
-    // 直接找到完全包含此關鍵字的 option
-    var matched = Array.from(sel.options).find(function(o){
-      return o.value.indexOf(kw) !== -1;
-    });
-    if(matched){
-      sel.value = matched.value;
-      sel.dispatchEvent(new Event('change'));
-      sel.dispatchEvent(new Event('input'));
-    }
-    grid.querySelectorAll('.sg-item').forEach(function(e){ e.classList.remove('sg-on'); });
-    el.classList.add('sg-on');
-  };
-})();
-</script>
 </body>
 </html>
