@@ -319,7 +319,7 @@
                     <i class="fa-solid fa-clipboard-check text-green-500 mr-2"></i>
                     <h2 class="text-lg font-semibold text-slate-800">3. 生成結果 (中英對照)</h2>
                 </div>
-                <button onclick="copyToClipboard()" class="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors bg-blue-50 px-3 py-1.5 rounded-md hover:bg-blue-100">
+                <button onclick="copyAllToClipboard()" class="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 transition-colors px-3 py-1.5 rounded-md hover:bg-slate-100">
                     <i class="fa-regular fa-copy"></i>
                     <span id="copyBtnText">全部複製</span>
                 </button>
@@ -330,8 +330,11 @@
                 <p id="loadingText">AI 正在施展魔法擴充提示詞中...</p>
             </div>
 
-            <div id="outputContent" class="text-slate-700 whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-mono bg-slate-50 p-4 rounded-lg border border-slate-200">
-                </div>
+            <!-- 三個 option 卡片容器 -->
+            <div id="optionCards" class="hidden flex flex-col gap-4"></div>
+
+            <!-- 備用：存原始文字供全部複製 -->
+            <div id="outputContent" class="hidden"></div>
         </section>
         
         <footer class="mt-8 text-center text-slate-400 text-xs">
@@ -583,9 +586,12 @@
                 outputContent.textContent = generatedText;
                 hubSave(generatedText, 'generator');
 
+                // 拆成三個 option 卡片
+                renderOptionCards(generatedText);
+
                 // 顯示結果區塊
                 loadingIndicator.classList.add('hidden');
-                outputContent.classList.remove('hidden');
+                document.getElementById('optionCards').classList.remove('hidden');
 
             } catch (error) {
                 console.error('Error:', error);
@@ -599,30 +605,106 @@
             }
         }
 
-        // 複製到剪貼簿功能
-        function copyToClipboard() {
-            const outputText = document.getElementById('outputContent').textContent;
-            if (!outputText) return;
+        // ── 複製工具函式 ──
+        function copyText(text, feedbackEl, feedbackMsg) {
+            navigator.clipboard?.writeText(text).then(() => {
+                const orig = feedbackEl.textContent;
+                feedbackEl.textContent = feedbackMsg || '✓ 已複製';
+                setTimeout(() => { feedbackEl.textContent = orig; }, 2000);
+            }).catch(() => {
+                // fallback
+                const ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); } catch(e) {}
+                document.body.removeChild(ta);
+            });
+        }
 
-            const textArea = document.createElement("textarea");
-            textArea.value = outputText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            
-            try {
-                document.execCommand('copy');
-                const copyBtnText = document.getElementById('copyBtnText');
-                const originalText = copyBtnText.textContent;
-                copyBtnText.textContent = '已複製！';
-                
-                setTimeout(() => {
-                    copyBtnText.textContent = originalText;
-                }, 2000);
-            } catch (err) {
-                console.error('複製失敗', err);
-                showError('無法複製到剪貼簿，請手動選取複製。');
-            } finally {
-                document.body.removeChild(textArea);
+        // 全部複製（維持舊功能）
+        function copyAllToClipboard() {
+            const text = document.getElementById('outputContent').textContent;
+            if (!text) return;
+            const btn = document.getElementById('copyBtnText');
+            copyText(text, btn, '已複製！');
+        }
+
+        // 單一 option 複製（只複製英文咒語那行）
+        function copyOption(idx) {
+            const card = document.getElementById('opt-card-' + idx);
+            if (!card) return;
+            const promptLine = card.querySelector('.opt-prompt').textContent;
+            const btn = card.querySelector('.opt-copy-btn span');
+            copyText(promptLine, btn, '✓ 已複製');
+        }
+
+        // 渲染三個 option 卡片
+        function renderOptionCards(rawText) {
+            const container = document.getElementById('optionCards');
+            container.innerHTML = '';
+
+            // 用 ### Option N 切塊
+            const blocks = rawText.split(/(?=### Option \d)/);
+
+            const titles = ['Basic & Clear', 'Highly Detailed', 'Artistic'];
+            const colors = [
+                { badge: '#e0e7ff', badgeText: '#3730a3', border: '#c7d2fe' },
+                { badge: '#fce7f3', badgeText: '#9d174d', border: '#fbcfe8' },
+                { badge: '#d1fae5', badgeText: '#065f46', border: '#a7f3d0' },
+            ];
+
+            let rendered = 0;
+            blocks.forEach((block, i) => {
+                const match = block.match(/### Option (\d)/);
+                if (!match) return;
+                const n = parseInt(match[1]) - 1;
+                const c = colors[n] || colors[0];
+
+                // 英文咒語（**【英文咒語】** 下一行）
+                const enMatch = block.match(/\*\*【英文咒語】\*\*\s*
+([^
+]+)/);
+                const enPrompt = enMatch ? enMatch[1].trim() : '';
+
+                // 中文翻譯（**【中文翻譯】** 下一行）
+                const zhMatch = block.match(/\*\*【中文翻譯】\*\*\s*
+([\s\S]+?)(?=###|$)/);
+                const zhText = zhMatch ? zhMatch[1].trim() : '';
+
+                // 標題（### Option N: ... 第一行）
+                const titleMatch = block.match(/### Option \d+:\s*(.+)/);
+                const titleSuffix = titleMatch ? titleMatch[1].trim() : '';
+
+                const card = document.createElement('div');
+                card.id = 'opt-card-' + n;
+                card.style.cssText = `border:1.5px solid ${c.border};border-radius:12px;padding:16px;background:#fff;`;
+
+                card.innerHTML = `
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:${c.badge};color:${c.badgeText};">Option ${n+1}</span>
+                            <span style="font-size:13px;font-weight:500;color:#374151;">${titleSuffix}</span>
+                        </div>
+                        <button class="opt-copy-btn" onclick="copyOption(${n})" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;">
+                            <i class="fa-regular fa-copy" style="font-size:11px;"></i>
+                            <span>複製咒語</span>
+                        </button>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">英文咒語</div>
+                        <div class="opt-prompt" style="font-size:12px;font-family:monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;color:#1e293b;line-height:1.6;word-break:break-all;">${enPrompt}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">中文翻譯</div>
+                        <div style="font-size:13px;color:#475569;line-height:1.7;">${zhText}</div>
+                    </div>`;
+
+                container.appendChild(card);
+                rendered++;
+            });
+
+            // fallback：若解析失敗，直接顯示原始文字
+            if (rendered === 0) {
+                container.innerHTML = `<div style="font-family:monospace;font-size:13px;white-space:pre-wrap;color:#374151;">${rawText}</div>`;
             }
         }
     </script>
