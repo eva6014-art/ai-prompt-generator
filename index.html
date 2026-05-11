@@ -44,6 +44,42 @@
 .sg-item img{width:100%;height:64px;object-fit:cover;display:block;}
 .sg-item-label{font-size:9px;font-weight:500;padding:3px 4px;color:#374151;background:#fff;text-align:center;line-height:1.3;}
 .sg-note{font-size:10px;color:#94a3b8;margin-top:6px;text-align:right;}
+        /* ── Style Module Tabs & Chips ── */
+        .sm-tabs { display:flex; gap:0; border-bottom:1.5px solid #e2e8f0; margin-bottom:10px; }
+        .sm-tab {
+            font-size:12px; padding:6px 14px; border:none; background:none;
+            color:#94a3b8; cursor:pointer; border-bottom:2px solid transparent;
+            margin-bottom:-1.5px; font-family:inherit; transition:all .15s;
+        }
+        .sm-tab:hover { color:#475569; }
+        .sm-tab.active { color:#4338ca; border-bottom-color:#4338ca; font-weight:500; }
+        .sm-panel { display:none; }
+        .sm-panel.active { display:block; }
+        .sm-dim { margin-bottom:8px; }
+        .sm-dim-label {
+            font-size:10px; font-weight:600; color:#94a3b8; letter-spacing:.06em;
+            text-transform:uppercase; margin-bottom:5px; display:block;
+        }
+        .sm-chip-row { display:flex; flex-wrap:wrap; gap:5px; }
+        .sm-chip {
+            font-size:12px; padding:4px 11px; border-radius:99px;
+            border:1.5px solid #e2e8f0; background:#f8fafc; color:#475569;
+            cursor:pointer; transition:all .12s; font-family:inherit; white-space:nowrap;
+        }
+        .sm-chip:hover { border-color:#818cf8; color:#4338ca; }
+        .sm-chip.on { background:#1e293b; border-color:#1e293b; color:#fff; }
+        .sm-preview {
+            margin-top:10px; padding:7px 10px; background:#f1f5f9;
+            border-radius:6px; font-size:11px; color:#64748b; line-height:1.6;
+            min-height:32px; border:1px solid #e2e8f0;
+        }
+        .sm-preview span { color:#94a3b8; }
+        .sm-clear-btn {
+            font-size:11px; color:#94a3b8; background:none; border:none;
+            cursor:pointer; padding:0; margin-top:4px; float:right;
+        }
+        .sm-clear-btn:hover { color:#ef4444; }
+
         .loader {
             border: 3px solid #f3f3f3;
             border-top: 3px solid #3b82f6;
@@ -141,7 +177,17 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">畫風 (Style)</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                        畫風 (Style)
+                        <span style="font-size:10px;font-weight:400;color:#94a3b8;margin-left:6px;">單選 或 勾選模組組合</span>
+                    </label>
+                    <!-- Tab 切換 -->
+                    <div class="sm-tabs">
+                        <button class="sm-tab active" onclick="switchStyleTab('quick',this)" type="button">快速選單</button>
+                        <button class="sm-tab" onclick="switchStyleTab('module',this)" type="button">風格模組 ✦</button>
+                    </div>
+                    <!-- 快速選單 panel -->
+                    <div class="sm-panel active" id="sm-quick">
                     <select id="styleSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
                         <optgroup label="📸 寫實 / 攝影">
                             <option value="photorealistic, ultra-detailed photography, sharp focus">寫實攝影 (Photorealistic)</option>
@@ -184,6 +230,52 @@
                             <option value="Japanese infographic illustration, Japanese lifestyle editorial illustration, flat vector commercial artwork, clean line art, modern mobile UI storytelling, social media short-video interface design, minimalist Japanese cartoon style, thick clean outlines, flat cel shading, contemporary fintech advertising illustration, app interface inspired composition, organized panel storytelling, clean geometric shapes, friendly character design, simplified facial features, editorial infographic layout, modern Japanese web illustration aesthetic, flat 2D vector art, lifestyle marketing illustration, subtle interior decoration, Scandinavian living room aesthetic, highly readable composition, polished digital illustration, commercial campaign artwork, cozy atmosphere, white background, clean negative space">日系簡約輪廓插畫風 (JP Minimal)</option>
                         </optgroup>
                     </select>
+                    </div><!-- /sm-quick -->
+
+                    <!-- 風格模組 panel -->
+                    <div class="sm-panel" id="sm-module">
+                        <div class="sm-dim">
+                            <span class="sm-dim-label">插畫風格</span>
+                            <div class="sm-chip-row" id="smc-style">
+                                <button type="button" class="sm-chip" data-val="Japanese information-style editorial illustration">日系資訊型</button>
+                                <button type="button" class="sm-chip" data-val="UI interface integrated illustration, app screen composition">UI介面整合</button>
+                                <button type="button" class="sm-chip" data-val="Scandinavian Nordic design aesthetic, muted natural tones">北歐配色</button>
+                                <button type="button" class="sm-chip" data-val="flat cartoon comic style, bold geometric shapes">扁平漫畫</button>
+                                <button type="button" class="sm-chip" data-val="commercial advertising illustration, high-impact visual">商業廣告感</button>
+                                <button type="button" class="sm-chip" data-val="social media short-video vertical panel composition">社群短影音</button>
+                            </div>
+                        </div>
+                        <div class="sm-dim">
+                            <span class="sm-dim-label">線條</span>
+                            <div class="sm-chip-row" id="smc-line">
+                                <button type="button" class="sm-chip" data-val="thick black bold outline, heavy stroke">粗黑輪廓</button>
+                                <button type="button" class="sm-chip" data-val="uniform stroke weight, consistent line thickness">等粗線條</button>
+                                <button type="button" class="sm-chip" data-val="low detail, simplified shapes, minimal line art">低細節</button>
+                            </div>
+                        </div>
+                        <div class="sm-dim">
+                            <span class="sm-dim-label">配色</span>
+                            <div class="sm-chip-row" id="smc-color">
+                                <button type="button" class="sm-chip" data-val="clean white background, white space">白底</button>
+                                <button type="button" class="sm-chip" data-val="high brightness blue color palette, vivid cerulean">高明度藍</button>
+                                <button type="button" class="sm-chip" data-val="warm off-white cream tone, beige warm palette">米白暖色</button>
+                                <button type="button" class="sm-chip" data-val="pastel soft color palette, muted tones">柔和粉彩</button>
+                                <button type="button" class="sm-chip" data-val="bold primary colors, high contrast vivid hues">大膽原色</button>
+                            </div>
+                        </div>
+                        <div class="sm-dim">
+                            <span class="sm-dim-label">構圖</span>
+                            <div class="sm-chip-row" id="smc-comp">
+                                <button type="button" class="sm-chip" data-val="mobile vertical storyboard panel layout, 9:16 frame">手機直式</button>
+                                <button type="button" class="sm-chip" data-val="card-based information layout, editorial card grid">卡片式資訊</button>
+                                <button type="button" class="sm-chip" data-val="UI floating overlay composition, app notification layer">UI浮層</button>
+                                <button type="button" class="sm-chip" data-val="isometric bird's eye view, angled geometric perspective">等角視角</button>
+                            </div>
+                        </div>
+                        <div class="sm-preview" id="sm-preview"><span>勾選上方模組，自動組合成 prompt...</span></div>
+                        <button type="button" class="sm-clear-btn" onclick="clearStyleModule()">✕ 清除全部</button>
+                    </div><!-- /sm-module -->
+
                 </div>
                 
                 <div>
@@ -353,7 +445,7 @@
             const apiKey = document.getElementById('apiKeyInput').value.trim();
             const selectedModel = document.getElementById('modelSelect').value;
             const userInput = document.getElementById('userInput').value.trim();
-            const style = document.getElementById('styleSelect').value;
+            const style = (typeof getStyleValue === 'function') ? getStyleValue() : document.getElementById('styleSelect').value;
             const lighting = document.getElementById('lightingSelect').value;
             const aspectRatio = document.getElementById('aspectRatioSelect').value; // 抓取長寬比
 
@@ -558,6 +650,76 @@
     grid.querySelectorAll('.sg-item').forEach(function(e){e.classList.remove('sg-on');});
     el.classList.add('sg-on');
   };
+})();
+</script>
+<script>
+// ── 風格模組 JS ─────────────────────────────────────────────────
+(function(){
+    var currentTab = 'quick'; // 'quick' | 'module'
+    var moduleState = { style:[], line:[], color:[], comp:[] };
+
+    // Tab 切換
+    window.switchStyleTab = function(tab, btn) {
+        currentTab = tab;
+        document.querySelectorAll('.sm-tab').forEach(function(t){ t.classList.remove('active'); });
+        btn.classList.add('active');
+        document.querySelectorAll('.sm-panel').forEach(function(p){ p.classList.remove('active'); });
+        document.getElementById('sm-' + tab).classList.add('active');
+    };
+
+    // Chip 勾選
+    var dimMap = { 'smc-style':'style', 'smc-line':'line', 'smc-color':'color', 'smc-comp':'comp' };
+    Object.keys(dimMap).forEach(function(rowId){
+        var dim = dimMap[rowId];
+        document.getElementById(rowId).querySelectorAll('.sm-chip').forEach(function(chip){
+            chip.addEventListener('click', function(){
+                var val = chip.dataset.val;
+                var idx = moduleState[dim].indexOf(val);
+                if(idx > -1){
+                    moduleState[dim].splice(idx,1);
+                    chip.classList.remove('on');
+                } else {
+                    moduleState[dim].push(val);
+                    chip.classList.add('on');
+                }
+                updateModulePreview();
+            });
+        });
+    });
+
+    function updateModulePreview(){
+        var parts = [];
+        if(moduleState.style.length) parts = parts.concat(moduleState.style);
+        if(moduleState.line.length)  parts = parts.concat(moduleState.line);
+        if(moduleState.color.length) parts = parts.concat(moduleState.color);
+        if(moduleState.comp.length)  parts = parts.concat(moduleState.comp);
+        var preview = document.getElementById('sm-preview');
+        if(parts.length){
+            preview.innerHTML = parts.join(', ');
+        } else {
+            preview.innerHTML = '<span>勾選上方模組，自動組合成 prompt...</span>';
+        }
+    }
+
+    window.clearStyleModule = function(){
+        moduleState = { style:[], line:[], color:[], comp:[] };
+        document.querySelectorAll('.sm-chip').forEach(function(c){ c.classList.remove('on'); });
+        updateModulePreview();
+    };
+
+    // 讓 generatePrompt 能正確讀取「現在用的是哪種 style」
+    // 覆寫全域的 getStyleValue，供 generatePrompt 呼叫
+    window.getStyleValue = function(){
+        if(currentTab === 'module'){
+            var parts = [];
+            if(moduleState.style.length) parts = parts.concat(moduleState.style);
+            if(moduleState.line.length)  parts = parts.concat(moduleState.line);
+            if(moduleState.color.length) parts = parts.concat(moduleState.color);
+            if(moduleState.comp.length)  parts = parts.concat(moduleState.comp);
+            return parts.join(', ') || document.getElementById('styleSelect').value;
+        }
+        return document.getElementById('styleSelect').value;
+    };
 })();
 </script>
 </body>
