@@ -607,53 +607,78 @@
             copyText(card.querySelector('.opt-prompt').textContent, card.querySelector('.opt-copy-span'), '✓ 已複製');
         }
         function renderOptionCards(raw) {
-            const container = document.getElementById('optionCards');
+            var container = document.getElementById('optionCards');
             container.innerHTML = '';
-            const colors = [
+            var colors = [
                 { badge:'#e0e7ff', text:'#3730a3', border:'#c7d2fe' },
                 { badge:'#fce7f3', text:'#9d174d', border:'#fbcfe8' },
-                { badge:'#d1fae5', text:'#065f46', border:'#a7f3d0' },
+                { badge:'#d1fae5', text:'#065f46', border:'#a7f3d0' }
             ];
-            const blocks = raw.split(/(?=### Option \d)/);
-            let rendered = 0;
-            blocks.forEach(block => {
-                const m = block.match(/### Option (\d)/);
-                if (!m) return;
-                const n = parseInt(m[1]) - 1;
-                const c = colors[n] || colors[0];
-                const titleM = block.match(/### Option \d+:\s*(.+)/);
-                const enM = block.match(/\*\*【英文咒語】\*\*\s*
-([^
-]+)/);
-                const zhM = block.match(/\*\*【中文翻譯】\*\*\s*
-([\s\S]+?)(?=###|$)/);
-                const card = document.createElement('div');
+
+            // 用字串切割取代 regex split
+            var parts = raw.split('### Option ');
+            var blocks = parts.filter(function(b){ return b.trim(); });
+
+            var rendered = 0;
+            blocks.forEach(function(block) {
+                // 取 option 編號
+                var numChar = block.charAt(0);
+                var n = parseInt(numChar) - 1;
+                if (isNaN(n) || n < 0) return;
+                var c = colors[n] || colors[0];
+
+                // 取標題（第一行冒號後）
+                var firstLine = block.split('\n')[0] || '';
+                var colonIdx = firstLine.indexOf(':');
+                var titleSuffix = colonIdx !== -1 ? firstLine.slice(colonIdx+1).trim() : firstLine;
+
+                // 取英文咒語
+                var enPrompt = '';
+                var enMarker = '【英文咒語】';
+                var enIdx = block.indexOf(enMarker);
+                if (enIdx !== -1) {
+                    var afterEn = block.slice(enIdx + enMarker.length);
+                    // 跳過 ** 和換行
+                    afterEn = afterEn.replace(/^\*\*/, '').replace(/^\n/, '');
+                    enPrompt = afterEn.split('\n')[0].trim();
+                }
+
+                // 取中文翻譯
+                var zhText = '';
+                var zhMarker = '【中文翻譯】';
+                var zhIdx = block.indexOf(zhMarker);
+                if (zhIdx !== -1) {
+                    var afterZh = block.slice(zhIdx + zhMarker.length);
+                    afterZh = afterZh.replace(/^\*\*/, '').replace(/^\n/, '');
+                    zhText = afterZh.trim();
+                }
+
+                var card = document.createElement('div');
                 card.id = 'opt-card-' + n;
-                card.style.cssText = `border:1.5px solid ${c.border};border-radius:12px;padding:16px;background:#fff;margin-bottom:12px;`;
-                card.innerHTML = `
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:${c.badge};color:${c.text};">Option ${n+1}</span>
-                            <span style="font-size:13px;font-weight:500;color:#374151;">${titleM ? titleM[1] : ''}</span>
-                        </div>
-                        <button onclick="copyOption(${n})" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;">
-                            <i class="fa-regular fa-copy" style="font-size:11px;"></i>
-                            <span class="opt-copy-span">複製咒語</span>
-                        </button>
-                    </div>
-                    <div style="margin-bottom:8px;">
-                        <div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">英文咒語</div>
-                        <div class="opt-prompt" style="font-size:12px;font-family:monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;color:#1e293b;line-height:1.6;word-break:break-all;">${enM ? enM[1].trim() : ''}</div>
-                    </div>
-                    <div>
-                        <div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">中文翻譯</div>
-                        <div style="font-size:13px;color:#475569;line-height:1.7;">${zhM ? zhM[1].trim() : ''}</div>
-                    </div>`;
+                card.style.cssText = 'border:1.5px solid ' + c.border + ';border-radius:12px;padding:16px;background:#fff;margin-bottom:12px;';
+                card.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+                    + '<div style="display:flex;align-items:center;gap:8px;">'
+                    + '<span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:' + c.badge + ';color:' + c.text + ';">Option ' + (n+1) + '</span>'
+                    + '<span style="font-size:13px;font-weight:500;color:#374151;">' + titleSuffix + '</span>'
+                    + '</div>'
+                    + '<button onclick="copyOption(' + n + ')" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;">'
+                    + '<i class="fa-regular fa-copy" style="font-size:11px;"></i>'
+                    + '<span class="opt-copy-span">複製咒語</span>'
+                    + '</button></div>'
+                    + '<div style="margin-bottom:8px;">'
+                    + '<div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">英文咒語</div>'
+                    + '<div class="opt-prompt" style="font-size:12px;font-family:monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;color:#1e293b;line-height:1.6;word-break:break-all;">' + enPrompt + '</div>'
+                    + '</div>'
+                    + '<div>'
+                    + '<div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">中文翻譯</div>'
+                    + '<div style="font-size:13px;color:#475569;line-height:1.7;">' + zhText + '</div>'
+                    + '</div>';
                 container.appendChild(card);
                 rendered++;
             });
+
             if (rendered === 0) {
-                container.innerHTML = `<pre style="font-size:13px;white-space:pre-wrap;color:#374151;">${raw}</pre>`;
+                container.innerHTML = '<pre style="font-size:13px;white-space:pre-wrap;color:#374151;">' + raw + '</pre>';
             }
         }
 
