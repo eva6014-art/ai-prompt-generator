@@ -45,39 +45,21 @@
 .sg-item-label{font-size:9px;font-weight:500;padding:3px 4px;color:#374151;background:#fff;text-align:center;line-height:1.3;}
 .sg-note{font-size:10px;color:#94a3b8;margin-top:6px;text-align:right;}
         /* ── Style Module Tabs & Chips ── */
-        .sm-tabs { display:flex; gap:0; border-bottom:1.5px solid #e2e8f0; margin-bottom:10px; }
-        .sm-tab {
-            font-size:12px; padding:6px 14px; border:none; background:none;
-            color:#94a3b8; cursor:pointer; border-bottom:2px solid transparent;
-            margin-bottom:-1.5px; font-family:inherit; transition:all .15s;
-        }
+        .sm-tabs { display:flex; border-bottom:1.5px solid #e2e8f0; margin-bottom:10px; }
+        .sm-tab { font-size:12px; padding:6px 14px; border:none; background:none; color:#94a3b8; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1.5px; font-family:inherit; transition:all .15s; }
         .sm-tab:hover { color:#475569; }
         .sm-tab.active { color:#4338ca; border-bottom-color:#4338ca; font-weight:500; }
         .sm-panel { display:none; }
         .sm-panel.active { display:block; }
         .sm-dim { margin-bottom:8px; }
-        .sm-dim-label {
-            font-size:10px; font-weight:600; color:#94a3b8; letter-spacing:.06em;
-            text-transform:uppercase; margin-bottom:5px; display:block;
-        }
+        .sm-dim-label { font-size:10px; font-weight:600; color:#94a3b8; letter-spacing:.06em; text-transform:uppercase; margin-bottom:5px; display:block; }
         .sm-chip-row { display:flex; flex-wrap:wrap; gap:5px; }
-        .sm-chip {
-            font-size:12px; padding:4px 11px; border-radius:99px;
-            border:1.5px solid #e2e8f0; background:#f8fafc; color:#475569;
-            cursor:pointer; transition:all .12s; font-family:inherit; white-space:nowrap;
-        }
+        .sm-chip { font-size:12px; padding:4px 11px; border-radius:99px; border:1.5px solid #e2e8f0; background:#f8fafc; color:#475569; cursor:pointer; transition:all .12s; font-family:inherit; white-space:nowrap; }
         .sm-chip:hover { border-color:#818cf8; color:#4338ca; }
         .sm-chip.on { background:#1e293b; border-color:#1e293b; color:#fff; }
-        .sm-preview {
-            margin-top:10px; padding:7px 10px; background:#f1f5f9;
-            border-radius:6px; font-size:11px; color:#64748b; line-height:1.6;
-            min-height:32px; border:1px solid #e2e8f0;
-        }
+        .sm-preview { padding:7px 10px; background:#f1f5f9; border-radius:6px; font-size:11px; color:#64748b; line-height:1.6; min-height:32px; border:1px solid #e2e8f0; flex:1; }
         .sm-preview span { color:#94a3b8; }
-        .sm-clear-btn {
-            font-size:11px; color:#94a3b8; background:none; border:none;
-            cursor:pointer; padding:0; margin-top:4px; float:right;
-        }
+        .sm-clear-btn { font-size:11px; color:#94a3b8; background:none; border:none; cursor:pointer; padding:0; flex-shrink:0; }
         .sm-clear-btn:hover { color:#ef4444; }
 
         .loader {
@@ -149,13 +131,13 @@
                     <i class="fa-solid fa-table-cells-large text-indigo-400 mr-1"></i>構圖方式 (Composition)
                 </label>
                 <div class="flex flex-wrap gap-2" id="compositionChips">
-                    <button type="button" class="comp-chip" data-value="" onclick="selectChip(this,'comp')">不指定</button>
-                    <button type="button" class="comp-chip" data-value="rule of thirds composition" onclick="selectChip(this,'comp')">三分法</button>
-                    <button type="button" class="comp-chip" data-value="centered symmetrical composition" onclick="selectChip(this,'comp')">置中</button>
-                    <button type="button" class="comp-chip" data-value="left-heavy composition, right side reserved for text" onclick="selectChip(this,'comp')">左視覺右文案</button>
-                    <button type="button" class="comp-chip" data-value="right-heavy composition, left side reserved for text" onclick="selectChip(this,'comp')">右視覺左文案</button>
-                    <button type="button" class="comp-chip" data-value="dynamic diagonal composition" onclick="selectChip(this,'comp')">斜角動感</button>
-                    <button type="button" class="comp-chip" data-value="close-up product shot, macro detail" onclick="selectChip(this,'comp')">商品特寫</button>
+                    <button type="button" class="comp-chip" data-value="">不指定</button>
+                    <button type="button" class="comp-chip" data-value="rule of thirds composition">三分法</button>
+                    <button type="button" class="comp-chip" data-value="centered symmetrical composition">置中</button>
+                    <button type="button" class="comp-chip" data-value="left-heavy composition, right side reserved for text">左視覺右文案</button>
+                    <button type="button" class="comp-chip" data-value="right-heavy composition, left side reserved for text">右視覺左文案</button>
+                    <button type="button" class="comp-chip" data-value="dynamic diagonal composition">斜角動感</button>
+                    <button type="button" class="comp-chip" data-value="close-up product shot, macro detail">商品特寫</button>
                 </div>
             </div>
 
@@ -165,29 +147,26 @@
                     <i class="fa-solid fa-crop-simple text-indigo-400 mr-1"></i>畫面比例 (Aspect Ratio)
                 </label>
                 <div class="flex flex-wrap gap-2" id="ratioChips">
-                    <button type="button" class="ratio-chip" data-value="16:9" onclick="selectChip(this,'ratio')">16:9</button>
-                    <button type="button" class="ratio-chip active" data-value="1920x600" onclick="selectChip(this,'ratio')">1920×600</button>
-                    <button type="button" class="ratio-chip" data-value="1:1" onclick="selectChip(this,'ratio')">1:1</button>
-                    <button type="button" class="ratio-chip" data-value="9:16" onclick="selectChip(this,'ratio')">9:16</button>
-                    <button type="button" class="ratio-chip" data-value="3:2 KV" onclick="selectChip(this,'ratio')">3:2 KV</button>
-                    <button type="button" class="ratio-chip" data-value="4:3" onclick="selectChip(this,'ratio')">4:3</button>
-                    <button type="button" class="ratio-chip" data-value="21:9" onclick="selectChip(this,'ratio')">21:9</button>
+                    <button type="button" class="ratio-chip" data-value="16:9">16:9</button>
+                    <button type="button" class="ratio-chip active" data-value="1920x600">1920×600</button>
+                    <button type="button" class="ratio-chip" data-value="1:1">1:1</button>
+                    <button type="button" class="ratio-chip" data-value="9:16">9:16</button>
+                    <button type="button" class="ratio-chip" data-value="3:2 KV">3:2 KV</button>
+                    <button type="button" class="ratio-chip" data-value="4:3">4:3</button>
+                    <button type="button" class="ratio-chip" data-value="21:9">21:9</button>
                 </div>
             </div>
 
-            <!-- 畫風：全寬獨立區塊 -->
-            <div class="mt-2">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">
                         畫風 (Style)
-                        <span style="font-size:10px;font-weight:400;color:#94a3b8;margin-left:6px;">單選 或 勾選模組組合</span>
+                        <span style="font-size:10px;font-weight:400;color:#94a3b8;margin-left:6px;">單選 或 勾選模組</span>
                     </label>
-                    <!-- Tab 切換 -->
                     <div class="sm-tabs">
                         <button class="sm-tab active" onclick="switchStyleTab('quick',this)" type="button">快速選單</button>
                         <button class="sm-tab" onclick="switchStyleTab('module',this)" type="button">風格模組 ✦</button>
                     </div>
-                    <!-- 快速選單 panel -->
                     <div class="sm-panel active" id="sm-quick">
                     <select id="styleSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
                         <optgroup label="📸 寫實 / 攝影">
@@ -233,7 +212,6 @@
                     </select>
                     </div><!-- /sm-quick -->
 
-                    <!-- 風格模組 panel -->
                     <div class="sm-panel" id="sm-module">
                         <div class="sm-dim">
                             <span class="sm-dim-label">插畫風格</span>
@@ -274,25 +252,25 @@
                             </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
-                            <div class="sm-preview" id="sm-preview" style="flex:1;margin-top:0;"><span>勾選上方模組，自動組合成 prompt...</span></div>
-                            <button type="button" class="sm-clear-btn" onclick="clearStyleModule()" style="flex-shrink:0;float:none;">✕ 清除</button>
+                            <div class="sm-preview" id="sm-preview"><span>勾選上方模組，自動組合成 prompt...</span></div>
+                            <button type="button" class="sm-clear-btn" onclick="clearStyleModule()">✕ 清除</button>
                         </div>
                     </div><!-- /sm-module -->
-                </div><!-- /畫風欄 -->
-            </div><!-- /畫風區塊 -->
+                </div>
 
-            <!-- 光影：獨立一行，快速選單模式顯示，風格模組模式隱藏 -->
-            <div class="mt-3" id="lighting-block">
-                <label class="block text-sm font-medium text-slate-700 mb-1">光影 (Lighting)</label>
-                <select id="lightingSelect" class="w-full md:w-1/3 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
-                    <option value="電影光 (Cinematic Lighting)">電影光 (Cinematic Lighting)</option>
-                    <option value="自然光 (Natural Light)">自然光 (Natural Light)</option>
-                    <option value="霓虹燈 (Neon Lights)">霓虹燈 (Neon Lights)</option>
-                    <option value="黃金時刻 (Golden Hour)">黃金時刻 (Golden Hour)</option>
-                    <option value="棚拍打光 (Studio Lighting)">棚拍打光 (Studio Lighting)</option>
-                    <option value="Volumetric lighting, god rays, atmospheric mist, cinematic depth">體積光/耶穌光 (Volumetric Lighting)</option>
-                    <option value="Soft diffuse lighting, bright and airy, even illumination, high key">柔和漫射光 (Soft Diffuse)</option>
-                </select>
+                <div id="lighting-block">
+                    <label class="block text-sm font-medium text-slate-700 mb-1">光影 (Lighting)</label>
+                    <select id="lightingSelect" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-slate-700">
+                        <option value="電影光 (Cinematic Lighting)">電影光 (Cinematic Lighting)</option>
+                        <option value="自然光 (Natural Light)">自然光 (Natural Light)</option>
+                        <option value="霓虹燈 (Neon Lights)">霓虹燈 (Neon Lights)</option>
+                        <option value="黃金時刻 (Golden Hour)">黃金時刻 (Golden Hour)</option>
+                        <option value="棚拍打光 (Studio Lighting)">棚拍打光 (Studio Lighting)</option>
+                        <option value="Volumetric lighting, god rays, atmospheric mist, cinematic depth">體積光/耶穌光 (Volumetric Lighting)</option>
+                        <option value="Soft diffuse lighting, bright and airy, even illumination, high key">柔和漫射光 (Soft Diffuse)</option>
+                    </select>
+                </div>
+
                 <div style="display:none;">
                     <select id="aspectRatioSelect">
                         <option value="16:9" selected>16:9</option>
@@ -324,16 +302,11 @@
                     <span id="copyBtnText">全部複製</span>
                 </button>
             </div>
-            
             <div id="loadingIndicator" class="hidden py-8 flex flex-col items-center justify-center text-slate-500">
                 <div class="loader mb-3"></div>
                 <p id="loadingText">AI 正在施展魔法擴充提示詞中...</p>
             </div>
-
-            <!-- 三個 option 卡片容器 -->
-            <div id="optionCards" class="hidden flex flex-col gap-4"></div>
-
-            <!-- 備用：存原始文字供全部複製 -->
+            <div id="optionCards" class="hidden" style="display:none;flex-direction:column;gap:16px;"></div>
             <div id="outputContent" class="hidden"></div>
         </section>
         
@@ -355,9 +328,17 @@
         let selectedComp = '';
         let selectedRatio = '1920x600'; // 預設
 
-        // 初始化：預設 1920x600 active
+        // 初始化：預設 1920x600 active + 綁定 chip 事件
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.ratio-chip[data-value="1920x600"]')?.classList.add('active');
+            // 綁定構圖 chip
+            document.querySelectorAll('.comp-chip').forEach(btn => {
+                btn.addEventListener('click', function() { selectChip(this, 'comp'); });
+            });
+            // 綁定比例 chip
+            document.querySelectorAll('.ratio-chip').forEach(btn => {
+                btn.addEventListener('click', function() { selectChip(this, 'ratio'); });
+            });
         });
 
         function selectChip(el, type) {
@@ -586,12 +567,9 @@
                 outputContent.textContent = generatedText;
                 hubSave(generatedText, 'generator');
 
-                // 拆成三個 option 卡片
                 renderOptionCards(generatedText);
-
-                // 顯示結果區塊
                 loadingIndicator.classList.add('hidden');
-                document.getElementById('optionCards').classList.remove('hidden');
+                document.getElementById('optionCards').style.display = 'flex';
 
             } catch (error) {
                 console.error('Error:', error);
@@ -605,108 +583,135 @@
             }
         }
 
-        // ── 複製工具函式 ──
-        function copyText(text, feedbackEl, feedbackMsg) {
+        // ── 複製工具 ──
+        function copyText(text, feedbackEl, msg) {
             navigator.clipboard?.writeText(text).then(() => {
                 const orig = feedbackEl.textContent;
-                feedbackEl.textContent = feedbackMsg || '✓ 已複製';
+                feedbackEl.textContent = msg || '✓ 已複製';
                 setTimeout(() => { feedbackEl.textContent = orig; }, 2000);
             }).catch(() => {
-                // fallback
                 const ta = document.createElement('textarea');
                 ta.value = text; document.body.appendChild(ta); ta.select();
                 try { document.execCommand('copy'); } catch(e) {}
                 document.body.removeChild(ta);
             });
         }
-
-        // 全部複製（維持舊功能）
         function copyAllToClipboard() {
             const text = document.getElementById('outputContent').textContent;
             if (!text) return;
-            const btn = document.getElementById('copyBtnText');
-            copyText(text, btn, '已複製！');
+            copyText(text, document.getElementById('copyBtnText'), '已複製！');
         }
-
-        // 單一 option 複製（只複製英文咒語那行）
         function copyOption(idx) {
             const card = document.getElementById('opt-card-' + idx);
             if (!card) return;
-            const promptLine = card.querySelector('.opt-prompt').textContent;
-            const btn = card.querySelector('.opt-copy-btn span');
-            copyText(promptLine, btn, '✓ 已複製');
+            copyText(card.querySelector('.opt-prompt').textContent, card.querySelector('.opt-copy-span'), '✓ 已複製');
         }
-
-        // 渲染三個 option 卡片
-        function renderOptionCards(rawText) {
+        function renderOptionCards(raw) {
             const container = document.getElementById('optionCards');
             container.innerHTML = '';
-
-            // 用 ### Option N 切塊
-            const blocks = rawText.split(/(?=### Option \d)/);
-
-            const titles = ['Basic & Clear', 'Highly Detailed', 'Artistic'];
             const colors = [
-                { badge: '#e0e7ff', badgeText: '#3730a3', border: '#c7d2fe' },
-                { badge: '#fce7f3', badgeText: '#9d174d', border: '#fbcfe8' },
-                { badge: '#d1fae5', badgeText: '#065f46', border: '#a7f3d0' },
+                { badge:'#e0e7ff', text:'#3730a3', border:'#c7d2fe' },
+                { badge:'#fce7f3', text:'#9d174d', border:'#fbcfe8' },
+                { badge:'#d1fae5', text:'#065f46', border:'#a7f3d0' },
             ];
-
+            const blocks = raw.split(/(?=### Option \d)/);
             let rendered = 0;
-            blocks.forEach((block, i) => {
-                const match = block.match(/### Option (\d)/);
-                if (!match) return;
-                const n = parseInt(match[1]) - 1;
+            blocks.forEach(block => {
+                const m = block.match(/### Option (\d)/);
+                if (!m) return;
+                const n = parseInt(m[1]) - 1;
                 const c = colors[n] || colors[0];
-
-                // 英文咒語（**【英文咒語】** 下一行）
-                const enMatch = block.match(/\*\*【英文咒語】\*\*\s*
+                const titleM = block.match(/### Option \d+:\s*(.+)/);
+                const enM = block.match(/\*\*【英文咒語】\*\*\s*
 ([^
 ]+)/);
-                const enPrompt = enMatch ? enMatch[1].trim() : '';
-
-                // 中文翻譯（**【中文翻譯】** 下一行）
-                const zhMatch = block.match(/\*\*【中文翻譯】\*\*\s*
+                const zhM = block.match(/\*\*【中文翻譯】\*\*\s*
 ([\s\S]+?)(?=###|$)/);
-                const zhText = zhMatch ? zhMatch[1].trim() : '';
-
-                // 標題（### Option N: ... 第一行）
-                const titleMatch = block.match(/### Option \d+:\s*(.+)/);
-                const titleSuffix = titleMatch ? titleMatch[1].trim() : '';
-
                 const card = document.createElement('div');
                 card.id = 'opt-card-' + n;
-                card.style.cssText = `border:1.5px solid ${c.border};border-radius:12px;padding:16px;background:#fff;`;
-
+                card.style.cssText = `border:1.5px solid ${c.border};border-radius:12px;padding:16px;background:#fff;margin-bottom:12px;`;
                 card.innerHTML = `
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
                         <div style="display:flex;align-items:center;gap:8px;">
-                            <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:${c.badge};color:${c.badgeText};">Option ${n+1}</span>
-                            <span style="font-size:13px;font-weight:500;color:#374151;">${titleSuffix}</span>
+                            <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:${c.badge};color:${c.text};">Option ${n+1}</span>
+                            <span style="font-size:13px;font-weight:500;color:#374151;">${titleM ? titleM[1] : ''}</span>
                         </div>
-                        <button class="opt-copy-btn" onclick="copyOption(${n})" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;">
+                        <button onclick="copyOption(${n})" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;">
                             <i class="fa-regular fa-copy" style="font-size:11px;"></i>
-                            <span>複製咒語</span>
+                            <span class="opt-copy-span">複製咒語</span>
                         </button>
                     </div>
                     <div style="margin-bottom:8px;">
                         <div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">英文咒語</div>
-                        <div class="opt-prompt" style="font-size:12px;font-family:monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;color:#1e293b;line-height:1.6;word-break:break-all;">${enPrompt}</div>
+                        <div class="opt-prompt" style="font-size:12px;font-family:monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;color:#1e293b;line-height:1.6;word-break:break-all;">${enM ? enM[1].trim() : ''}</div>
                     </div>
                     <div>
                         <div style="font-size:10px;font-weight:600;color:#94a3b8;letter-spacing:.05em;margin-bottom:4px;">中文翻譯</div>
-                        <div style="font-size:13px;color:#475569;line-height:1.7;">${zhText}</div>
+                        <div style="font-size:13px;color:#475569;line-height:1.7;">${zhM ? zhM[1].trim() : ''}</div>
                     </div>`;
-
                 container.appendChild(card);
                 rendered++;
             });
-
-            // fallback：若解析失敗，直接顯示原始文字
             if (rendered === 0) {
-                container.innerHTML = `<div style="font-family:monospace;font-size:13px;white-space:pre-wrap;color:#374151;">${rawText}</div>`;
+                container.innerHTML = `<pre style="font-size:13px;white-space:pre-wrap;color:#374151;">${raw}</pre>`;
             }
         }
+
+        // ── 風格模組 JS ──
+        (function(){
+            var currentTab = 'quick';
+            var state = { style:[], line:[], color:[], comp:[] };
+            var dimMap = { 'smc-style':'style','smc-line':'line','smc-color':'color','smc-comp':'comp' };
+
+            window.switchStyleTab = function(tab, btn) {
+                currentTab = tab;
+                document.querySelectorAll('.sm-tab').forEach(t => t.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.sm-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('sm-' + tab).classList.add('active');
+                var lb = document.getElementById('lighting-block');
+                if (lb) lb.style.display = tab === 'module' ? 'none' : '';
+                var sg = document.getElementById('sg-block');
+                if (sg) sg.style.display = tab === 'module' ? 'none' : '';
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                Object.keys(dimMap).forEach(rowId => {
+                    var dim = dimMap[rowId];
+                    var row = document.getElementById(rowId);
+                    if (!row) return;
+                    row.querySelectorAll('.sm-chip').forEach(chip => {
+                        chip.addEventListener('click', function() {
+                            var val = chip.dataset.val;
+                            var idx = state[dim].indexOf(val);
+                            if (idx > -1) { state[dim].splice(idx,1); chip.classList.remove('on'); }
+                            else { state[dim].push(val); chip.classList.add('on'); }
+                            updatePreview();
+                        });
+                    });
+                });
+            });
+
+            function updatePreview() {
+                var parts = [...state.style, ...state.line, ...state.color, ...state.comp];
+                var el = document.getElementById('sm-preview');
+                el.innerHTML = parts.length ? parts.join(', ') : '<span>勾選上方模組，自動組合成 prompt...</span>';
+            }
+
+            window.clearStyleModule = function() {
+                state = { style:[], line:[], color:[], comp:[] };
+                document.querySelectorAll('.sm-chip').forEach(c => c.classList.remove('on'));
+                updatePreview();
+            };
+
+            window.getStyleValue = function() {
+                if (currentTab === 'module') {
+                    var parts = [...state.style, ...state.line, ...state.color, ...state.comp];
+                    return parts.join(', ') || document.getElementById('styleSelect').value;
+                }
+                return document.getElementById('styleSelect').value;
+            };
+        })();
     </script>
 <script>
 (function(){
@@ -734,81 +739,6 @@
     grid.querySelectorAll('.sg-item').forEach(function(e){e.classList.remove('sg-on');});
     el.classList.add('sg-on');
   };
-})();
-</script>
-<script>
-// ── 風格模組 JS ─────────────────────────────────────────────────
-(function(){
-    var currentTab = 'quick'; // 'quick' | 'module'
-    var moduleState = { style:[], line:[], color:[], comp:[] };
-
-    // Tab 切換
-    window.switchStyleTab = function(tab, btn) {
-        currentTab = tab;
-        document.querySelectorAll('.sm-tab').forEach(function(t){ t.classList.remove('active'); });
-        btn.classList.add('active');
-        document.querySelectorAll('.sm-panel').forEach(function(p){ p.classList.remove('active'); });
-        document.getElementById('sm-' + tab).classList.add('active');
-        // 風格模組模式隱藏光影（插畫風不需要打光設定）
-        var lb = document.getElementById('lighting-block');
-        if (lb) lb.style.display = (tab === 'module') ? 'none' : '';
-        var sg = document.getElementById('sg-block');
-        if (sg) sg.style.display = (tab === 'module') ? 'none' : '';
-    };
-
-    // Chip 勾選
-    var dimMap = { 'smc-style':'style', 'smc-line':'line', 'smc-color':'color', 'smc-comp':'comp' };
-    Object.keys(dimMap).forEach(function(rowId){
-        var dim = dimMap[rowId];
-        document.getElementById(rowId).querySelectorAll('.sm-chip').forEach(function(chip){
-            chip.addEventListener('click', function(){
-                var val = chip.dataset.val;
-                var idx = moduleState[dim].indexOf(val);
-                if(idx > -1){
-                    moduleState[dim].splice(idx,1);
-                    chip.classList.remove('on');
-                } else {
-                    moduleState[dim].push(val);
-                    chip.classList.add('on');
-                }
-                updateModulePreview();
-            });
-        });
-    });
-
-    function updateModulePreview(){
-        var parts = [];
-        if(moduleState.style.length) parts = parts.concat(moduleState.style);
-        if(moduleState.line.length)  parts = parts.concat(moduleState.line);
-        if(moduleState.color.length) parts = parts.concat(moduleState.color);
-        if(moduleState.comp.length)  parts = parts.concat(moduleState.comp);
-        var preview = document.getElementById('sm-preview');
-        if(parts.length){
-            preview.innerHTML = parts.join(', ');
-        } else {
-            preview.innerHTML = '<span>勾選上方模組，自動組合成 prompt...</span>';
-        }
-    }
-
-    window.clearStyleModule = function(){
-        moduleState = { style:[], line:[], color:[], comp:[] };
-        document.querySelectorAll('.sm-chip').forEach(function(c){ c.classList.remove('on'); });
-        updateModulePreview();
-    };
-
-    // 讓 generatePrompt 能正確讀取「現在用的是哪種 style」
-    // 覆寫全域的 getStyleValue，供 generatePrompt 呼叫
-    window.getStyleValue = function(){
-        if(currentTab === 'module'){
-            var parts = [];
-            if(moduleState.style.length) parts = parts.concat(moduleState.style);
-            if(moduleState.line.length)  parts = parts.concat(moduleState.line);
-            if(moduleState.color.length) parts = parts.concat(moduleState.color);
-            if(moduleState.comp.length)  parts = parts.concat(moduleState.comp);
-            return parts.join(', ') || document.getElementById('styleSelect').value;
-        }
-        return document.getElementById('styleSelect').value;
-    };
 })();
 </script>
 </body>
